@@ -1,33 +1,44 @@
 module EventTree where
 
-data ScheduledEventTree  = EmptyNode | Node ScheduledEvent (Tree ScheduledEvent) (Tree ScheduledEvent) deriving (Show, Eq, Read)
-type Event = (String, Int)
-type ScheduledEvent = (String, Int, Session)
+data EventTree  = EmptyNode | Node [Event] Int EventTree EventTree deriving (Show, Eq, Read)
+type Event      = (String, Int)
+type Result     = (EventTree, [[Event]])
 
-data Color = White | Black deriving (Show, Eq, Read)
+singleton :: Event -> EventTree
+singleton a = Node (a:[]) (snd a) EmptyNode EmptyNode
 
-class NodeColor a where
-  colorize :: a -> Color
 
-instance NodeColor ScheduledEventTree where
-  colorize EmptyNode                     = White
-  colorize Node (_, _, NotScheduled) _ _ = White
-  colorize Node (_, _, (_ (min, max) length)) l r
-    | length > max                               = Black
-    | colorize l == Black && colorize r == Black = Black
-    | otherwise                                  = White
-
-singleton :: (ScheduledEvent a) => a -> Tree a
-singleton a = Node a EmptyNode EmptyNode
-
-treeInsert :: (Session s, Event e, ScheduledEvent se, ScheduledEventTree t) => s -> (s -> e -> se) -> t -> e -> t
-treeInsert sess f EmptyNode a = singleton $ f sess a
-treeInsert sess f tree@(Node x l r) a
-  | eventOfx == a                     = tree
-  | colorize tree == Black            = tree
-  | l == EmptyNode && r == EmptyNode  = Node x (Node (f sess a) EmptyNode EmptyNode) (Node (f NotScheduled a) EmptyNode EmptyNode)
-  | colorize l == White               = Node x (treeInsert sess f l a) r
-  | colorize r == White               = Node x l (treeInsert sess r a)
-  | otherwise                         = tree
+treeInsert :: (Int, Int) -> EventTree -> Event -> Result
+treeInsert (min, max) EmptyNode e = (etree, xs)
+  where
+    etree@(Node _ t _ _) = singleton e
+    xs                   = if t >= min && t <= max then [e:[]] else [[]]
+treeInsert (min, max) tr@(Node es time l r) e
+  | time > max                        = (tr, [[]])
+  | goal time                         = (tr, [[]])
+  | isEmptyLeafs                      = (Node es time newl newr, res)
+  | time < max                        = (Node es time (fst lins) (fst rins), (snd lins ++ snd rins))
+  | otherwise                         = (tr, [[]])
     where
-      eventOfx = (fst x, scnd x)
+      goal t           = t >= min && t <= max
+      newl             = Node (e:es) (time + (snd e)) EmptyNode EmptyNode
+      newr             = Node es time EmptyNode EmptyNode
+      res              = if goal $ time + snd e then [(e:es)] else [[]]
+      lins             = treeInsert (min, max) l e
+      rins             = treeInsert (min, max) r e
+      isEmptyLeafs     = l == EmptyNode && r == EmptyNode
+
+
+findFirst :: (Int, Int) -> EventTree -> [Event] -> Result
+findFirst _ t []          = (t, [[]])
+findFirst minmax t es     =
+  let empty res = null $ snd res in
+  let f         = (\acc x -> if empty acc then treeInsert minmax (fst acc) x else acc) in
+    foldl f (t, [[]]) es
+
+
+findAll :: (Int, Int) -> EventTree -> [Event] -> Result
+findAll _ t []            = (t, [[]])
+findAll minmax t es       =
+  let f         = (\acc x -> treeInsert minmax (fst acc) x)
+  in foldl f (t, [[]]) es
