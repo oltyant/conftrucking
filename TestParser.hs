@@ -1,6 +1,6 @@
-module SolutionTest where
+module ParserTest where
 
-import Main (parseLines, splitLine)
+import Parser (parseLines, splitLine)
 import Test.HUnit
 
 testSplitLineVanilla = TestCase $ assertEqual
