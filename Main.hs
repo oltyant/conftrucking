@@ -1,8 +1,6 @@
 module Main where
 
 import System.Environment
-import Text.Regex.Base
-import Text.Regex.TDFA
 import Parser
 import Scheduler
 import EventTree

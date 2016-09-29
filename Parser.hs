@@ -1,6 +1,8 @@
 module Parser where
 
 import EventTree
+import Text.Regex.Base
+import Text.Regex.TDFA
 
 parseLines :: [String] -> [Event]
 parseLines ss = map splitLine ss
