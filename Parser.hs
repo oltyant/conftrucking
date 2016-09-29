@@ -15,3 +15,4 @@ splitLine s      = (title, time)
         res      = last splitted =~ "([0-9]+|lightning)" :: String
         time
           | res == "lightning" = 5
+          | otherwise          = read res :: Int
