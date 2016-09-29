@@ -11,7 +11,7 @@ parseLines ss = map splitLine ss
 splitLine :: String -> Event
 splitLine s      = (title, time)
   where splitted = words s
-        title    = unwords $ init splitted
+        title    = unwords $ splitted
         res      = last splitted =~ "([0-9]+|lightning)" :: String
         time
           | res == "lightning" = 5
