@@ -8,11 +8,27 @@ import EventTree
 main = do
   args    <- getArgs
   content <- readFile $ args !! 0
-  let count      = args !! 1
+  let countStr   = args !! 1
+  let count      = read countStr :: Int
   let inputLines = lines content
   let events     = parseLines inputLines
-  let root       = Node [] 0 EmptyNode EmptyNode
-  let morningRng = (180, 180)
-  let morningEvents = [res | (_, res) <- takeWhile (\(_, events) -> length events < count) (treeInsert morningRng root
-  let (morningSchedule, afternoonSchedule) = schedules (parseLines inputLines)
+  let plans      = if count > 0 then planDays events (Just count) else planDays events Nothing in
+    printResults plans
+
+
+printTrackLine :: TrackLine -> IO ()
+printTrackLine (time, (title, _)) = putStrLn (show time ++ " " ++ title)
+
+
+printResult :: (Int, [TrackLine]) -> IO()
+printResult (idx, tracks) = let title = "Track " ++ show idx in
+                            let (lasttime, _) = last tracks in
+                              do putStrLn title
+                                 mapM_ printTrackLine tracks
+                                 printTrackLine $ networking lasttime
+                                 putStrLn ""
+
+
+printResults :: [(Int, [TrackLine])] -> IO ()
+printResults plans = mapM_ printResult plans
       
