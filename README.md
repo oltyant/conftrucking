@@ -73,7 +73,7 @@ Track 2:
 
 ## First thoughts
 
-My first thought was that the solution is similar than for a change making problem where typically we have distinct coins and we would like to change a banknote or coin. I learnt Data Structures and Algorithm at the University so I revised my materials learnt there about this problem.
+My first thought was that the solution is similar to the change making problem where typically we have distinct coins and we would like to change money with the least number of coins. I learnt Data Structures and Algorithm at the University so I revised my materials learnt there.
 
 ### Greedy Method
 
@@ -90,7 +90,7 @@ Greedy solution start with 4 and then choose 1 twice so it thinks: 4+1+1 is the 
 For the Conference Tracking problem we can choose first the event which has the most and then do this until we fill up the morning session. With the remaining elements we can do the same for the afternoon session.
 
 My concerns regarding to this approach are:
-* Only find one solution at a time (if it finds at all)
+* Only find one solution at a time (if it finds at all) so we need to do backsteps and cover a coin or a subset of coins in order to use again the Greedy method and find another solution
 * For many solutions we need to change the algorithm and play it with the removal of elements so we need to count with the non repeatable permutations problem which requires N! operations, where N=count of events.
 
 
@@ -108,14 +108,14 @@ T[n]=T[n - 1] + (1 or 3 or 4) | T[n - 2] + (1 or 3 or 4)
 Which will give the 3+3 optimal solution
 ```
 For the Conference Tracking problem here is the proof of optimal substructure:
-* For one event it is either part of the solution or not
+* For one event it is either part of the solution (one session) or not
 * N - 1 events followed by E[N] event or not where N=count of events, E is a list where the Nth element is the Nth Event we can choose
 
-According to the fact that Haskell has immutable data collections I turned to solve the problem with a **Convolution Probabilistic Tree**. The root start with the initial case when there is no Event which we use. Then we insert into the tree the first event which should be either part of the solution (left child of root) or not (right child of root). O neach insert we need to insert two times more element than that we have on the leaf level in worst case, which means that the space complexity could be really high: O(2<sup>n</sup>).
+According to the fact that Haskell is purely functional language and it has immutable data collections I turned to solve the problem with an implementation of **Convolution Probabilistic Tree**. The root start with the initial case when there is no Event which we use. Then we insert into the tree the first event which should be either part of the solution (left child of root) or not (right child of root). With each newly introduced Event we need to insert two times more element that we have on the deepest level in worst case, which means that the space complexity could be really high: O(2<sup>n</sup>).
 
-The space complexity can be reduced by the following dead-end cases:
+The space complexity can be reduced by the following inclusion of *dead-end cases*:
 * No need to insert any new Node after a Node that contains a solution
-* No need to insert any new Node after a Node that already run overtime (so not fulfills the criteria)
+* No need to insert any new Node after a Node that already reach overtime (so not fulfills the criteria)
 
 Here is an image for the following case:
 ```
@@ -125,10 +125,34 @@ Event list (length):
 * Event 3 (20 mins)
 * Event 4 (10 mins)
 ```
-After inserting all to the target tree:
+After inserting all to the target tree we get:
 ![probabilistic_convolution_tree](https://cloud.githubusercontent.com/assets/3776068/19024234/61a22084-88ff-11e6-8bb5-e869d4333014.jpg)
 
-Problems with the solution:
+### Improvements
+
+* As the space complexity (thus the memory usage) could be high we can do the insertion of Events step by step finding the first result only:
+```
+findFirst :: Range -> EventTree -> [Event] -> Result
+
+where
+
+type Range  = (minimum length of session, maximum length of session) :: (Int, Int)
+type Event  = (title, length) :: (String, Int)
+type Result = (Tree after the first solution found, events for solution) :: (EventTree, [Event])
+```
+* After the first N events we can check the solution list with:
+```
+findNStep :: Range -> EventTree -> [Event] -> Int -> Result
+```
+* Anf last bit not least we can get all the solutions:
+```
+findAll :: Range -> EventTree -> [Event] -> Result
+```
+See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
+
+
+### Problems with the solution:
+
 * It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times ... etc. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
 * Owing to the redundancy the insertion of the subsequent steps requires more and more time on the right side which results inbalance in the tree and therefore results difficulty when parallel computation comes into picture as different subtrees requires different work resources.
 
