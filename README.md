@@ -153,7 +153,7 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 
 ### Problem with the Probabilistic Convolution Tree solution:
 
-* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times ... etc. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
+* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times, the third event and the [2,3] twice. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
 * Owing to the redundancy the insertion of the subsequent steps requires more and more time on the right side which results inbalance in the tree and therefore results difficulty when parallel computation comes into picture as different subtrees requires different work resources.
 
 __Solution (in progress)__:
