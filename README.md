@@ -182,7 +182,7 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 
   Productivity  76.7% of total user, 63.6% of total elapsed
 ```
-* with running ```./Main ../test-input-big.txt 19 +RTS -s```
+* with running ```./Main ../test-input-big.txt 190 +RTS -s```
 ```
   42,423,838,592 bytes allocated in the heap
   32,638,120,368 bytes copied during GC
