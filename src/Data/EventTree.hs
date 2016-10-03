@@ -8,14 +8,14 @@ type Result     = (EventTree, [[Event]])
 type Range      = (Int, Int)
 
 singleton :: Event -> EventTree
-singleton a = Node (a:[]) (snd a) EmptyNode EmptyNode
+singleton a = Node [a] (snd a) EmptyNode EmptyNode
 
 
 treeInsert :: Range -> EventTree -> Event -> Result
 treeInsert (min, max) EmptyNode e = (etree, xs)
   where
     etree@(Node _ t _ _) = singleton e
-    xs                   = if t >= min && t <= max then [e:[]] else [[]]
+    xs                   = if t >= min && t <= max then [[e]] else [[]]
 treeInsert (min, max) tr@(Node es time l r) e
   | l `contains` e                    = (tr, [[]])
   | time > max                        = (tr, [[]])
@@ -28,9 +28,9 @@ treeInsert (min, max) tr@(Node es time l r) e
         (Node xs _ _ _) -> head xs == e
         _               -> False
       intime t         = t >= min && t <= max
-      newl             = Node (e:es) (time + (snd e)) EmptyNode EmptyNode
+      newl             = Node (e:es) (time + snd e) EmptyNode EmptyNode
       newr             = Node es time EmptyNode EmptyNode
-      res              = if intime $ time + snd e then [(e:es)] else [[]]
+      res              = if intime $ time + snd e then [e:es] else [[]]
       lins             = treeInsert (min, max) l e
       rins             = treeInsert (min, max) r e
       isEmptyLeafs     = l == EmptyNode && r == EmptyNode
@@ -40,7 +40,7 @@ findFirst :: Range -> EventTree -> [Event] -> Result
 findFirst _ t []          = (t, [[]])
 findFirst minmax t es     =
   let empty res = null $ head $ snd res in
-  let f         = (\acc x -> if empty acc then treeInsert minmax (fst acc) x else acc) in
+  let f acc x   = if empty acc then treeInsert minmax (fst acc) x else acc in
     foldl f (t, [[]]) es
 
 
@@ -54,6 +54,6 @@ findAll :: Range -> EventTree -> [Event] -> Result
 findAll _ t []            = (t, [[]])
 findAll minmax t es       = foldl f (t, [[]]) es
   where
-        f = (\acc x -> let (newtree, res) = treeInsert minmax (fst acc) x in
-                (newtree, snd acc ++ res))
+        f acc x = let (newtree, res) = treeInsert minmax (fst acc) x in
+                (newtree, snd acc ++ res)
       

@@ -41,7 +41,7 @@ networking t = let length = 60 in
 scheduleTrackLines :: [Event] -> Time -> [TrackLine]
 scheduleTrackLines [] _     = []
 scheduleTrackLines (e:es) t = let (line, newtime) = scheduleTrackLine e t in
-                                line : (scheduleTrackLines es newtime)
+                                line : scheduleTrackLines es newtime
 
 schedules :: [Event] -> Maybe Int -> [([Event], [[Event]])]
 schedules es (Just n) = let (morningSchedules, notScheduled) = sessions es morning root n in
@@ -53,10 +53,10 @@ schedules es Nothing = let (morningSchedule, notScheduled) = session es morning 
 
 
 planDays :: [Event] -> Maybe Int -> [(Int, [TrackLine])]
-planDays es n = let scheduledEvents = schedules es n in
-                let f               = (\(morningSchedule, _) -> scheduleTrackLines morningSchedule morningStart) in
-                let morningTracks   = map f scheduledEvents in
-                let g               = (\(_, afternoonSchedule) -> (noon, lunch) : scheduleTrackLines (head afternoonSchedule) afternoonStart) in
-                let afternoonTracks = map g scheduledEvents in
-                let dayTracks       = zipWith (++) morningTracks afternoonTracks in
+planDays es n = let scheduledEvents          = schedules es n in
+                let f (morningSchedule, _)   = scheduleTrackLines morningSchedule morningStart in
+                let morningTracks            = map f scheduledEvents in
+                let g (_, afternoonSchedule) = (noon, lunch) : scheduleTrackLines (head afternoonSchedule) afternoonStart in
+                let afternoonTracks          = map g scheduledEvents in
+                let dayTracks                = zipWith (++) morningTracks afternoonTracks in
                   zip [1..] dayTracks

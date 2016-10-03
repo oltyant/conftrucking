@@ -1,0 +1,87 @@
+Writing Fast Tests Against Enterprise Rails 60min
+Overdoing it in Python 45min
+Lua for the Masses 30min
+Ruby Errors from Mismatched Gem Versions 45min
+Common Ruby Errors 45min
+Rails for Python Developers lightning
+Communicating Over Distance 60min
+Accounting-Driven Development 45min
+Woah 30min
+Sit Down and Write 30min
+Pair Programming vs Noise 45min
+Rails Magic 60min
+Ruby on Rails: Why We Should Move On 60min
+Clojure Ate Scala (on my project) 45min
+Programming in the Boondocks of Seattle 30min
+Ruby vs. Clojure for Back-End Development 30min
+Ruby on Rails Legacy App Maintenance 60min
+A World Without HackerNews 30min
+User Interface CSS in Rails Apps 30min
+Scala for the impatient 45min
+Clojure for the brave and true 30min
+Scala puzzlers lightning
+Ocaml in the Real World 45min
+Real World Haskell 60min
+I am more functional when I am lazy 60min
+Thunk you and for the lazy 45min
+Join to the Lambda 30min
+Python the king of Amazon 60m
+Clojurescript for the scripter 60min
+The Good the dirty and the Scala 60min
+Clojure for the effective programmer 45min
+Haskell samples lightning
+Solve it with Recursion 30min
+Dynamic Programming in the Enterprise 45min
+Ocaml and the name of the problem 60min
+Canary and the bird's tale 30min
+Singing songs in Scala 45min
+Living Clojure 60min
+Appreciation in a Functional way 60min
+Clojure recipes 60min
+Haskell recipes 60min
+Ocaml recipes lighning
+Python recipes 30min
+Ruby on the railroad 30min
+Ruby recipes 45min
+C and C++ for side effects 60min
+Assemble it in Assembly 60min
+Pascal of the past lighning
+Find an oracle with Delphi 30min
+PostgreSQL the fast Elephant 30min
+NoSQL for not just Cassandra 45min
+Enter to Haksell 60min
+Be a Clojurian lightning
+Overkill an Elephant aka PostgreSQL story 30min
+JSON for your son lightning
+Marmalades and yaml 45min
+Ruby vs. Clojure for Back-End Development 30min
+Ruby on Rails Legacy App Maintenance 60min
+A World Without HackerNews 30min
+User Interface CSS in Rails Apps 30min
+Ruby for the impatient 45min
+Clojure for the brave and true 30min
+Ruby puzzlers lightning
+C in the Real World 45min
+Real World C++ 60min
+I am more functional when I am strict 60min
+Thunk you and for the strict 45min
+Transparent or opaque 30min
+C the king of Amazon 60m
+Clojure for the scripter 60min
+The Good the dirty and the Groovy 60min
+Leiningen for the effective programmer 45min
+SBT samples lightning
+Gradle and the name of the problem 60min
+SBT and the bird's tale 30min
+Singing songs in Python 45min
+Living Pascal 60min
+Appreciation in a OO way 60min
+Julia recipes 60min
+Mathlab recipes 60min
+BASH recipes lighning
+KSH recipes 30min
+Julia on the railroad 30min
+C recipes 45min
+Find Ruby for side effects 60min
+Enter to D 60min
+Be a Haskeller lightning
