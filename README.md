@@ -87,7 +87,7 @@ Available coins (unlimited number we have from each): 1,3,4
 Greedy solution start with 4 and then choose 1 twice so it thinks: 4+1+1 is the best answer however the truth is 3+3
 ```
 
-For the Conference Tracking problem we can choose first the event which has the most and then do this until we fill up the morning session. With the remaining elements we can do the same for the afternoon session.
+For the Conference Tracking problem we can choose first the event which is the longest in time (not longer than the reamining free time) and then do this until we fill up the morning session. With the remaining elements we can do the same for the afternoon session.
 
 My concerns regarding to this approach are:
 * Only find one solution at a time (if it finds at all) so we need to do backsteps and cover a coin or a subset of coins in order to use again the Greedy method and find another solution
