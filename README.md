@@ -151,10 +151,10 @@ findAll :: Range -> EventTree -> [Event] -> Result
 See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 
 
-### Problems with the solution:
+### Problem with the Probabilistic Convolution Tree solution:
 
 * It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times ... etc. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
 * Owing to the redundancy the insertion of the subsequent steps requires more and more time on the right side which results inbalance in the tree and therefore results difficulty when parallel computation comes into picture as different subtrees requires different work resources.
 
 __Solution (in progress)__:
-* Eliminate **Overlapping subproblems** with making non repeatable permutations on the events - this is O(n!) time complexity -  and creating a simple result of the event lists fulfill the criteria. 
+* Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(n<sup>2</sup>) time complexity -  and creating a simple result of the event lists. 
