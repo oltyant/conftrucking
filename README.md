@@ -124,6 +124,7 @@ Event list (length):
 * Event 2 (10 mins)
 * Event 3 (20 mins)
 * Event 4 (10 mins)
+Target Session length: 40 mins
 ```
 After inserting all to the event tree we get:
 ![probabilistic_convolution_tree](https://cloud.githubusercontent.com/assets/3776068/19024234/61a22084-88ff-11e6-8bb5-e869d4333014.jpg)
