@@ -75,7 +75,7 @@ Track 2:
 
 My first thought was that the solution is similar to the change making problem where typically we have distinct coins and we would like to change money with the least number of coins. I learnt Data Structures and Algorithm at the University so I revised my materials learnt there.
 
-### Greedy Method
+### Greedy algorithm
 
 The Greedy method is when we would like to achieve a goal with the presumption that for finding a global minimum or maximum it is enough to find the local minimums or maximums respectively. More specifically: If you feel that making the local optimal choices will yield the global optimal then you don't have to solve all the sub-problem at all. Greedy solutions don't usually give you the correct answer.
 
@@ -94,7 +94,7 @@ My concerns regarding to this approach are:
 * For many solutions we need to change the algorithm and play it with the removal of elements so we need to count with the non repeatable permutations problem which requires N! operations, where N=count of events.
 
 
-### Dynamical Programming algorithm
+### Dynamic Programming algorithm
 
 A dynamic programming algorithm examines the previously solved subproblems and combine their solutions to give the best solution for the given problem. If and only if we can find the optimal substructure for the problem (another words: we can solve it with recursion). For the coin change problem described above:
 ```
