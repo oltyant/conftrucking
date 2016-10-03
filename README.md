@@ -96,7 +96,7 @@ My concerns regarding to this approach are:
 
 ### Dynamic Programming algorithm
 
-A dynamic programming algorithm examines the previously solved subproblems and combine their solutions to give the best solution for the given problem. If and only if we can find the optimal substructure for the problem (another words: we can solve it with recursion). For the coin change problem described above:
+A dynamic programming algorithm examines the previously solved subproblems and combine their solutions to give the best solution for the given problem. If we can find the optimal substructure for the problem (literally this means we can solve it with recursion) then we can easily reach the proper result(s). For the coin change problem described above:
 ```
 Value of banknote to change: 6
 Available coins (unlimited number): 1,3,4
@@ -111,13 +111,13 @@ For the Conference Tracking problem here is the proof of optimal substructure:
 * For one event it is either part of the solution (one session) or not
 * N - 1 events followed by E[N] event or not where N=count of events, E is a list where the Nth element is the Nth Event we can choose
 
-According to the fact that Haskell is purely functional language and it has immutable data collections I turned to solve the problem with an implementation of **Convolution Probabilistic Tree**. The root start with the initial case when there is no Event which we use. Then we insert into the tree the first event which should be either part of the solution (left child of root) or not (right child of root). With each newly introduced Event we need to insert two times more element that we have on the deepest level in worst case, which means that the space complexity could be really high: O(2<sup>n</sup>).
+According to the fact that Haskell is purely functional language and it has persistent, recursive data collections I turned to solve the problem with an implementation of **Convolution Probabilistic Tree**. The root start with the initial case when there is no Event which we use. Then we insert into the tree the first event which should be either part of the solution (left child of root) or not (right child of root). With each newly introduced Event we need to insert two times more element that we have on the deepest level in worst case, which means that the space complexity could be really high: O(2<sup>n</sup>).
 
 The space complexity can be reduced by the following inclusion of *dead-end cases*:
 * No need to insert any new Node after a Node that contains a solution
 * No need to insert any new Node after a Node that already reach overtime (so not fulfills the criteria)
 
-Here is an image for the following case:
+Here is a tree for the following case:
 ```
 Event list (length):
 * Event 1 (30 mins)
@@ -125,7 +125,7 @@ Event list (length):
 * Event 3 (20 mins)
 * Event 4 (10 mins)
 ```
-After inserting all to the target tree we get:
+After inserting all to the event tree we get:
 ![probabilistic_convolution_tree](https://cloud.githubusercontent.com/assets/3776068/19024234/61a22084-88ff-11e6-8bb5-e869d4333014.jpg)
 
 ### Improvements
@@ -153,7 +153,7 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 
 ### Problem with the Probabilistic Convolution Tree solution:
 
-* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times, the third event and the [2,3] twice. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
+* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times, the third event and the [2,3] twice. This is called **Overlapping subproblems** in Dynamic programming and usually solved by reducing the space complexity of an array or a vector of elements which - most of the time - unforunately means the elimination of recursion.
 * Owing to the redundancy the insertion of the subsequent steps requires more and more time on the right side which results inbalance in the tree and therefore results difficulty when parallel computation comes into picture as different subtrees requires different work resources.
 
 ### Current runtime and memory statistics
@@ -208,4 +208,5 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 ```
 
 __Solution (in progress)__:
-* Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(n<sup>2</sup>) time complexity -  and creating a simple result of the event lists. 
+* Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(N<sup>2</sup>) time complexity -  and creating a simple result of the event lists.
+* Wiht vector solution the intermidate list contains N element at the most, which means O(N) space complexity
