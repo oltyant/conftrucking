@@ -75,7 +75,7 @@ Track 2:
 
 My first thought was that the solution is similar to the change making problem where typically we have distinct coins and we would like to change money with the least number of coins. I learnt Data Structures and Algorithm at the University so I revised my materials learnt there.
 
-### Greedy Method
+### Greedy algorithm
 
 The Greedy method is when we would like to achieve a goal with the presumption that for finding a global minimum or maximum it is enough to find the local minimums or maximums respectively. More specifically: If you feel that making the local optimal choices will yield the global optimal then you don't have to solve all the sub-problem at all. Greedy solutions don't usually give you the correct answer.
 
@@ -94,7 +94,7 @@ My concerns regarding to this approach are:
 * For many solutions we need to change the algorithm and play it with the removal of elements so we need to count with the non repeatable permutations problem which requires N! operations, where N=count of events.
 
 
-### Dynamical Programming algorithm
+### Dynamic Programming algorithm
 
 A dynamic programming algorithm examines the previously solved subproblems and combine their solutions to give the best solution for the given problem. If and only if we can find the optimal substructure for the problem (another words: we can solve it with recursion). For the coin change problem described above:
 ```
@@ -153,8 +153,59 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
 
 ### Problem with the Probabilistic Convolution Tree solution:
 
-* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times ... etc. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
+* It can be clearly seen that we have a lot of redundancy, so after 4 events inserted the tree contains the No event ([]) Node 5 times (!!), the first Event ([1]) 4 times, the second Event 3 times, the third event and the [2,3] twice. This is called **Overlapping subproblems** in Dynamic programming algorithm and usually solved by reducing the space complexity ot an array or a vector of elements which unforunately means the elimination of recursion.
 * Owing to the redundancy the insertion of the subsequent steps requires more and more time on the right side which results inbalance in the tree and therefore results difficulty when parallel computation comes into picture as different subtrees requires different work resources.
+
+### Current runtime and memory statistics
+
+* with running ```./Main ../test-input.txt 19 +RTS -s```
+```
+     123,780,200 bytes allocated in the heap
+      23,771,296 bytes copied during GC
+       2,688,928 bytes maximum residency (11 sample(s))
+          53,968 bytes maximum slop
+               8 MB total memory in use (0 MB lost due to fragmentation)
+
+                                    Tot time (elapsed)  Avg pause  Max pause
+  Gen  0       228 colls,     0 par    0.02s    0.02s     0.0001s    0.0007s
+  Gen  1        11 colls,     0 par    0.02s    0.02s     0.0014s    0.0033s
+
+  INIT    time    0.00s  (  0.00s elapsed)
+  MUT     time    0.12s  (  0.16s elapsed)
+  GC      time    0.04s  (  0.04s elapsed)
+  EXIT    time    0.00s  (  0.00s elapsed)
+  Total   time    0.16s  (  0.20s elapsed)
+
+  %GC     time      23.1%  (19.2% elapsed)
+
+  Alloc rate    1,021,138,354 bytes per MUT second
+
+  Productivity  76.7% of total user, 63.6% of total elapsed
+```
+* with running ```./Main ../test-input-big.txt 190 +RTS -s```
+```
+  42,423,838,592 bytes allocated in the heap
+  32,638,120,368 bytes copied during GC
+     649,109,736 bytes maximum residency (131 sample(s))
+       7,129,408 bytes maximum slop
+            1837 MB total memory in use (0 MB lost due to fragmentation)
+
+                                    Tot time (elapsed)  Avg pause  Max pause
+  Gen  0     81291 colls,     0 par   14.50s   14.51s     0.0002s    0.0008s
+  Gen  1       131 colls,     0 par   17.05s   17.06s     0.1302s    0.6633s
+
+  INIT    time    0.00s  (  0.00s elapsed)
+  MUT     time   10.53s  ( 11.83s elapsed)
+  GC      time   31.55s  ( 31.56s elapsed)
+  EXIT    time    0.08s  (  0.08s elapsed)
+  Total   time   42.16s  ( 43.47s elapsed)
+
+  %GC     time      74.8%  (72.6% elapsed)
+
+  Alloc rate    4,028,626,629 bytes per MUT second
+
+  Productivity  25.2% of total user, 24.4% of total elapsed
+```
 
 __Solution (in progress)__:
 * Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(n<sup>2</sup>) time complexity -  and creating a simple result of the event lists. 
