@@ -208,6 +208,19 @@ See [EventTree.hs](src/Data/EventTree.hs) for the implementations.
   Productivity  25.2% of total user, 24.4% of total elapsed
 ```
 
-__Solution (in progress)__:
-* Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(N<sup>2</sup>) time complexity -  and creating a simple result of the event lists.
-* Wiht vector solution the intermidate list contains N element at the most, which means O(N) space complexity
+__Improvements and further considerations__:
+* Eliminate **Overlapping subproblems** with making a list of solutions - this should mean O(N<sup>2</sup>) time complexity -  and creating a simple result of the event lists. We can specify the solutions can be found in the following links:
+https://wiki.haskell.org/Dynamic_programming_example and http://jelv.is/blog/Lazy-Dynamic-Programming/
+* As the event length is not surely unique therefore it is a good idea to do a classification (groupBy is your friend) based on length and after that based on these classes the dynamic programming solution is easier to apply
+* The performance of the EventTree solution can be improved by parallel processing. As we start to build up the tree with two independent subtrees, one of which contains the first event (E1) and the other which does not therefore we can build up 
+them through two independent but parallel processes. We can do this simplification on a lower level which requires 2<sup>n</sup> on the nth level.
+```
+import Control.Parallel
+
+EventTree = left `par` right `pseq` (aggregate left right)
+    where
+         left                            = findFirst (180, 180) (Node [("Event 1", 30)] 30 EmptyNode EmptyNode) [("Event 2", 10), ...]
+         right                           = findFirst (180, 180) (Node [] 0 EmptyNode EmptyNode) [("Event 2", 10), ...]
+         aggregate (lt, lres) (rt, rres) = (Node [] 0 lt rt, lres ++ rres)  
+       
+```
